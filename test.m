@@ -70,5 +70,43 @@ end
 figure; subplot(1,2,1); imshow(Igray);
 subplot(1,2,2); imshow(INew);
 
+clc; clear; close all; warning off;
+% === Nhập ảnh ===
+Iin = imgetfile;
+Iin = imread(Iin);
+[r, c, p] = size(Iin);
 
+% === Chuyển sang ảnh xám nếu là ảnh màu ===
+if p > 1
+    Igray = rgb2gray(Iin);
+else
+    Igray = Iin;
+end
 
+figure; imshow(Igray); title('Ảnh gốc mức xám');
+I = double(Igray);
+
+% Đạo hàm riêng theo Y
+Iy1 = [zeros(r,1) I(:,1:end-1)]; % dịch sang phải
+Iy2 = [I(:,2:end) zeros(r,1)];   % dịch sang trái
+dy = Iy2 - Iy1;
+dy = dy(:,1:c);
+figure; imshow(uint8(abs(dy))); title('Đạo hàm riêng theo Y');
+
+% Đạo hàm riêng theo X
+Ix1 = [zeros(1,c); I(1:end-1,:)]; % dịch xuống
+Ix2 = [I(2:end,:); zeros(1,c)];   % dịch lên
+dx = Ix2 - Ix1;
+dx = dx(1:r,:);
+figure; imshow(uint8(abs(dx))); title('Đạo hàm riêng theo X');
+
+% Ảnh biên độ gradient theo 2 công thức
+% (1) Euclidean norm
+G1 = sqrt(dy.^2 + dx.^2);
+
+% (2) Approximation (Manhattan norm)
+G2 = abs(dy) + abs(dx);
+
+% Hiển thị kết quả
+figure;imshow(uint8(G1)); title('Ảnh biên độ gradient 1');
+figure;imshow(uint8(G2)); title('Ảnh biên độ gradient 2');

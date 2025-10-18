@@ -1,4 +1,4 @@
-clc; clear; close all;
+clc; clear; close all; warning all;
 I = imread('color\t21.jpg');
 % Crop image
 I = im2gray(I);
