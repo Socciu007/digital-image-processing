@@ -33,9 +33,10 @@ for i = 1:m-1
 end
 % Results
 figure;
-subplot(1,3,1); imshow(uint8(I)); title('Ảnh gốc');
-subplot(1,3,2); imshow(uint8(Gx)); title('Gradient theo X (Roberts)');
-subplot(1,3,3); imshow(uint8(G)); title('Biên Roberts');
+subplot(1,4,1); imshow(uint8(I)); title('Ảnh gốc');
+subplot(1,4,2); imshow(uint8(Gx)); title('Gradient theo X (Roberts)');
+subplot(1,4,3); imshow(uint8(Gy)); title('Gradient theo Y (Roberts)');
+subplot(1,4,4); imshow(uint8(G)); title('Biên Roberts');
 
 %% --- SOBEL Filter ---
 % Mặt nạ Sobel
@@ -63,6 +64,7 @@ G = uint8(255 * mat2gray(G));
 
 % Hiển thị
 figure;
-subplot(1,3,1); imshow(uint8(I)); title('Ảnh gốc');
-subplot(1,3,2); imshow(uint8(Gx)); title('Gradient theo X (Sobel)');
-subplot(1,3,3); imshow(G); title('Biên Sobel');
+subplot(1,4,1); imshow(uint8(I)); title('Ảnh gốc');
+subplot(1,4,2); imshow(uint8(Gx)); title('Gradient theo X (Sobel)');
+subplot(1,4,3); imshow(uint8(Gy)); title('Gradient theo Y (Sobel)');
+subplot(1,4,4); imshow(G); title('Biên Sobel');
