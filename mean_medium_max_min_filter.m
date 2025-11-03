@@ -1,5 +1,9 @@
 function IOut = OutputI(I, k, type)
-    if size(I, 3) == 1
+    if islogical(I)
+        Itemp = MyFilterImage(I, k, type);
+        IOut = Itemp > 0.5; % chuyển lại thành nhị phân
+        IOut = logical(IOut);
+    elseif size(I, 3) == 1
         % Grayscale image
         IOut = MyFilterImage(I, k, type);
     elseif ndims(I) == 3
@@ -52,7 +56,7 @@ function IOut = MyFilterImage(I, k, type)
 end
 
 %% Read image
-I = imread('color\t18.jpg');
+% I = imread('color\t18.jpg');
 % I = im2gray(I);
 
 % Crop image
@@ -62,38 +66,46 @@ I = imread('color\t18.jpg');
 % I = I(:, startCol:endCol, :);
 
 %% Create various types of noise images (to test)
-INoisy = imnoise(I, 'salt & pepper', 0.05);
-IGaussian = imnoise(I, 'gaussian', 0, 0.02);
-ISalf = I;
-ISalf(rand(size(I)) < 0.05) = 255;
-IPepper = I;
-IPepper(rand(size(I)) < 0.05) = 0;
+% INoisy = imnoise(I, 'salt & pepper', 0.05);
+% IGaussian = imnoise(I, 'gaussian', 0, 0.02);
+% ISalf = I;
+% ISalf(rand(size(I)) < 0.05) = 255;
+% IPepper = I;
+% IPepper(rand(size(I)) < 0.05) = 0;
 
 %% Output Filter
-IMean   = OutputI(IGaussian, 5, 'mean');
-IMean3   = OutputI(IGaussian, 3, 'mean');
-IMedian = OutputI(INoisy, 5, 'median');
-IMedian3 = OutputI(INoisy, 3, 'median');
-IMax    = OutputI(IPepper, 5, 'max');
-IMin    = OutputI(ISalf, 5, 'min');
+% IMean   = OutputI(IGaussian, 5, 'mean');
+% IMean3   = OutputI(IGaussian, 3, 'mean');
+% IMedian = OutputI(INoisy, 5, 'median');
+% IMedian3 = OutputI(INoisy, 3, 'median');
+Iin = imgetfile;
+I = imread(Iin);
+I = imnoise(I, 'salt & pepper', 0.1);
+% if size(I,3) == 3
+%     I = rgb2gray(I);
+% end
+IMean   = OutputI(I, 15, 'mean');
+% IMax    = OutputI(BWs, 3, 'max');
+% IMin    = OutputI(BWs, 3, 'min');
+% IMedian = OutputI(I, 5, 'median');
 
 %% Show Image
-figure;
-subplot(1,4,1), imshow(I), title('Image Original');
-subplot(1,4,2), imshow(IGaussian), title('Gaussian Noise');
-subplot(1,4,3), imshow(IMean3), title('Mean Filter k=3');
-subplot(1,4,4), imshow(IMean), title('Mean Filter k=5');
-figure;
-subplot(1,4,1), imshow(I), title('Image Original');
-subplot(1,4,2), imshow(INoisy), title('Salf & Pepper Noise');
-subplot(1,4,3), imshow(IMedian3), title('Median Filter k=3');
-subplot(1,4,4), imshow(IMedian), title('Median Filter k=5');
-figure;
-subplot(1,2,1), imshow(IPepper), title('Pepper Noise');
-subplot(1,2,2), imshow(IMax), title('Max Filter k=5');
-figure;
-subplot(1,2,1), imshow(ISalf), title('Salf Noise');
-subplot(1,2,2), imshow(IMin), title('Min Filter k=5');
+% figure;
+subplot(1,2,1), imshow(I), title('Image Original');
+% subplot(1,4,2), imshow(IGaussian), title('Gaussian Noise');
+% subplot(1,4,3), imshow(IMean3), title('Mean Filter k=3');
+subplot(1,2,2), imshow(IMean), title('Mean Filter k=5');
+% figure;
+% subplot(1,2,1), imshow(I), title('Image Original');
+% subplot(1,4,2), imshow(INoisy), title('Salf & Pepper Noise');
+% subplot(1,2,2), imshow(IMedian), title('Median Filter');
+% subplot(1,4,4), imshow(IMedian), title('Median Filter k=5');
+% figure;
+% subplot(1,2,1), imshow(BWs), title('Original Image');
+% subplot(1,2,2), imshow(IMax), title('Max Filter');
+% figure;
+% subplot(1,2,1), imshow(BWs), title('Binarize Image');
+% subplot(1,2,2), imshow(IMin), title('Min Filter');
 
 
 
